@@ -103,9 +103,26 @@ def autocorrect(user_word, valid_words, diff_function, limit):
     """Returns the element of VALID_WORDS that has the smallest difference
     from USER_WORD. Instead returns USER_WORD if that difference is greater
     than LIMIT.
+    
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+
+    minIndex = 0
+    minDiff = diff_function(user_word, valid_words[minIndex], limit)
+
+    for i in range(1, len(valid_words)):
+        if(user_word == valid_words[i]):
+            return valid_words[i]
+        tempDiff = diff_function(user_word, valid_words[i], limit)
+        if tempDiff < minDiff:
+            minDiff = tempDiff
+            minIndex = i
+
+    if minDiff > limit:
+        return user_word
+    return valid_words[minIndex]
+
     # END PROBLEM 5
 
 
@@ -115,7 +132,36 @@ def shifty_shifts(start, goal, limit):
     their lengths.
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+
+
+    # idea is to compare the first letter of each word, if they're different then add one
+    # then recursion with the words but with the first letter cut off
+
+
+
+    def shifty_shifts1(start, goal, limit):
+
+        sLen, gLen = len(start), len(goal)
+
+        if limit == 0:
+            return 1
+
+        elif sLen > 0 and gLen > 0:
+            if start[0] != goal[0]:
+                return 1 + shifty_shifts1(start[1:sLen], goal[1:gLen], limit-1)
+            else:
+                return shifty_shifts1(start[1:sLen], goal[1:gLen], limit)
+        else:
+            return abs(gLen - sLen)
+
+
+    if start == goal:
+        return abs(len(goal) - len(start))
+    elif limit == 0:
+        return 0
+    else:
+        return shifty_shifts1(start, goal, limit)
+
     # END PROBLEM 6
 
 
