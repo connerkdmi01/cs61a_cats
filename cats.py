@@ -133,58 +133,71 @@ def shifty_shifts(start, goal, limit):
     """
     # BEGIN PROBLEM 6
 
+    def shifting(start,goal,lim):
+        if lim == 0 and start != goal:
+            return limit + 1
 
-    # idea is to compare the first letter of each word, if they're different then add one
-    # then recursion with the words but with the first letter cut off
+        if start == "" or goal == "":
+            return abs(len(start) - len(goal))
 
-
-
-    def shifty_shifts1(start, goal, limit):
-
-        sLen, gLen = len(start), len(goal)
-
-        if limit == 0:
-            return 1
-
-        elif sLen > 0 and gLen > 0:
-            if start[0] != goal[0]:
-                return 1 + shifty_shifts1(start[1:sLen], goal[1:gLen], limit-1)
-            else:
-                return shifty_shifts1(start[1:sLen], goal[1:gLen], limit)
+        if start[0] == goal[0]:
+            return shifting(start[1:], goal[1:], lim)
         else:
-            return abs(gLen - sLen)
+            return 1 + shifting(start[1:], goal[1:], lim - 1)
 
-
-    if start == goal:
-        return abs(len(goal) - len(start))
-    elif limit == 0:
-        return 0
-    else:
-        return shifty_shifts1(start, goal, limit)
+    return shifting(start,goal,limit)
 
     # END PROBLEM 6
 
 
 def pawssible_patches(start, goal, limit):
     """A diff function that computes the edit distance from START to GOAL."""
-    assert False, 'Remove this line'
+    
+    if limit == 0 and start != goal:
+        return limit + 1
+    if start == "" or goal == "":
+        return abs(len(start) - len(goal))
 
-    if ______________: # Fill in the condition
+    if goal[0] == start[0]: 
+        return pawssible_patches(start[1:],goal[1:], limit)
+
+    unsalvageable = True
+    for char in goal:
+        if char in start:
+            unsalvageable = False
+    if unsalvageable:
+        return max(len(start), len(goal))
+
+    if start[1:] == goal[1:] or len(start) == 1 or len(goal) == 1:
+        start = goal[0] + start[1:] 
+
+    elif goal[0] not in start[:2] and start[1] : # Fill in the condition
         # BEGIN
         "*** YOUR CODE HERE ***"
+        #need to add letter to start
+        start = goal[0] + start
+        
         # END
 
-    elif ___________: # Feel free to remove or add additional cases
+    elif len(start) > 1 and start[1] == goal[0]: # Feel free to remove or add additional cases
         # BEGIN
         "*** YOUR CODE HERE ***"
+        # remove letter from start
+        start = start[1:]
+        
         # END
 
     else:
+        """ 
         add_diff = ... # Fill in these lines
         remove_diff = ...
-        substitute_diff = ...
+        substitute_diff = ... """
         # BEGIN
+        #replace letter 
+        start = goal[0] + start[1:] 
         "*** YOUR CODE HERE ***"
+
+    return 1 + pawssible_patches(start[1:],goal[1:], limit-1)
         # END
 
 
