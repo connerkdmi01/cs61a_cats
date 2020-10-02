@@ -155,49 +155,21 @@ def pawssible_patches(start, goal, limit):
     
     if limit == 0 and start != goal:
         return limit + 1
+
     if start == "" or goal == "":
-        return abs(len(start) - len(goal))
-
-    if goal[0] == start[0]: 
-        return pawssible_patches(start[1:],goal[1:], limit)
-
-    unsalvageable = True
-    for char in goal:
-        if char in start:
-            unsalvageable = False
-    if unsalvageable:
         return max(len(start), len(goal))
 
-    if start[1:] == goal[1:] or len(start) == 1 or len(goal) == 1:
-        start = goal[0] + start[1:] 
+    if goal[0] == start[0]: #if letters match up, skip
+        return pawssible_patches(start[1:],goal[1:], limit)
 
-    elif goal[0] not in start[:2] and start[1] : # Fill in the condition
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        #need to add letter to start
-        start = goal[0] + start
-        
-        # END
 
-    elif len(start) > 1 and start[1] == goal[0]: # Feel free to remove or add additional cases
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # remove letter from start
-        start = start[1:]
-        
-        # END
+    add_diff = pawssible_patches((goal[0] + start)[1:], goal[1:], limit-1) # Fill in these lines
+    remove_diff = pawssible_patches(start[1:], goal, limit-1)
+    substitute_diff = pawssible_patches((goal[0] + start[1:])[1:], goal[1:], limit-1) 
+    
+    return 1 + min(add_diff, remove_diff, substitute_diff)
 
-    else:
-        """ 
-        add_diff = ... # Fill in these lines
-        remove_diff = ...
-        substitute_diff = ... """
-        # BEGIN
-        #replace letter 
-        start = goal[0] + start[1:] 
-        "*** YOUR CODE HERE ***"
 
-    return 1 + pawssible_patches(start[1:],goal[1:], limit-1)
         # END
 
 
